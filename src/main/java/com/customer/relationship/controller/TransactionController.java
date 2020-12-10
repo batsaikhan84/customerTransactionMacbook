@@ -8,16 +8,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 public class TransactionController {
     @Autowired
     private TransactionRepository transactionRepository;
+    @Autowired
     private UserRepository userRepository;
-//    @GetMapping("transactions")
+//    @GetMapping("/transactions")
 //    public Page<Transactions> getTransactions(Pageable pageable) {
 //        return transactionRepository.findAll(pageable);
 //    }
-    @GetMapping("users/{userId}/transactions")
+
+    @GetMapping("/users/{userId}/transactions")
     public Page<Transactions> getTransactionsByUser(@PathVariable (value = "userId") Long userId, Pageable pageable) {
         return transactionRepository.findByUserId(userId, pageable);
     }
@@ -25,16 +29,16 @@ public class TransactionController {
 //    public Transactions addTransaction(@RequestBody Transactions transactions) {
 //        return transactionRepository.save(transactions);
 //    }
-    @PostMapping("/transactions/{userId}/transactions")
-    public Transactions addTransaction(@PathVariable (value = "userId") Long userId, @RequestBody Transactions transactions) {
+    @PostMapping("/users/{userId}/transactions")
+    public Optional<Transactions> addTransaction(@PathVariable (value = "userId") Long userId, @RequestBody Transactions transactions) {
         return userRepository.findById(userId).map(user -> {
-            transactions.setUser();
+            transactions.setUser(user);
             return transactionRepository.save(transactions);
         });
     }
 //    @GetMapping("/transactions/{id}")
-//    public ResponseEntity<Transactions> getUser(@PathVariable(value = "id") long id) throws RecordNotFoundException {
-//        Transactions transactions = transactionRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("ID: " + id + " not found"));
+//    public ResponseEntity<Transactions> getUser(@PathVariable(value = "id") long id) throws TransactionNotFoundException {
+//        Transactions transactions = transactionRepository.findById(id).orElseThrow(() -> new TransactionNotFoundException("ID: " + id + " not found"));
 //        return ResponseEntity.ok().body(transactions);
 //    }
 //    @DeleteMapping("/transactions/{id}")

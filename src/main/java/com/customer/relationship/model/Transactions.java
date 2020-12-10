@@ -12,7 +12,7 @@ public class Transactions extends AuditModel{
     private Double amount;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private Users users;
+    private Users user;
 
     public Transactions() {
     }
@@ -22,15 +22,15 @@ public class Transactions extends AuditModel{
     }
 
     public Users getUser() {
-        return users;
+        return user;
     }
 
     public void setAmount(Double amount) {
         this.amount = amount;
     }
 
-    public void setUser(Users users) {
-        this.users = users;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     public long getId() {

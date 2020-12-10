@@ -11,5 +11,5 @@ import java.util.Optional;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transactions, Long> {
     Page<Transactions> findByUserId(Long userId, Pageable pageable);
-//    Optional<Transactions> findByIdAndUserId(Long id, Long userId);
+    Optional<Transactions> findByIdAndUserId(Long id, Long userId);
 }

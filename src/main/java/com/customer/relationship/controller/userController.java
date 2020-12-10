@@ -4,6 +4,8 @@ import com.customer.relationship.Repository.UserRepository;
 import com.customer.relationship.exception.UserNotFoundException;
 import com.customer.relationship.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,20 +21,19 @@ public class userController {
     public UserRepository userRepository;
 
     @GetMapping("/users")
-    public String getUsers(Model model) {
-        List<Users> userList = new ArrayList<>();
-        model.addAttribute("users", userList);
-        return "userList";
+    public Page<Users> getUsers(Pageable pageable) {
+        return userRepository.findAll(pageable);
+    }
+    @GetMapping("/users/{id}")
+    public ResponseEntity<Users> getUser(@PathVariable (value = "id") long id) throws UserNotFoundException {
+        Users user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("ID: " + id + " not found"));
+        return ResponseEntity.ok().body(user);
     }
     @PostMapping("/users")
     public Users addUser(@RequestBody Users users) {
         return userRepository.save(users);
     }
-    @GetMapping("/users/{id}")
-    public ResponseEntity<Users> getUser(@PathVariable(value = "id") long id) throws UserNotFoundException {
-        Users users = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("ID: " + id + " not found"));
-        return ResponseEntity.ok().body(users);
-    }
+
     @DeleteMapping("/users/{id}")
     public Map<String, String> deleteUser(@PathVariable(value = "id") long id) throws UserNotFoundException {
         Users users = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("ID: " + id + " not found"));
