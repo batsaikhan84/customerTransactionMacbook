@@ -1,8 +1,7 @@
 package com.customer.relationship.controller;
 
-import com.customer.relationship.Repository.TransactionRepository;
 import com.customer.relationship.Repository.UserRepository;
-import com.customer.relationship.exception.RecordNotFoundException;
+import com.customer.relationship.exception.UserNotFoundException;
 import com.customer.relationship.model.Users;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,21 +29,21 @@ public class userController {
         return userRepository.save(users);
     }
     @GetMapping("/users/{id}")
-    public ResponseEntity<Users> getUser(@PathVariable(value = "id") long id) throws RecordNotFoundException {
-        Users users = userRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("ID: " + id + " not found"));
+    public ResponseEntity<Users> getUser(@PathVariable(value = "id") long id) throws UserNotFoundException {
+        Users users = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("ID: " + id + " not found"));
         return ResponseEntity.ok().body(users);
     }
     @DeleteMapping("/users/{id}")
-    public Map<String, String> deleteUser(@PathVariable(value = "id") long id) throws RecordNotFoundException {
-        Users users = userRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("ID: " + id + " not found"));
+    public Map<String, String> deleteUser(@PathVariable(value = "id") long id) throws UserNotFoundException {
+        Users users = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("ID: " + id + " not found"));
         userRepository.delete(users);
         Map<String, String> deleteUser = new HashMap<>();
         deleteUser.put("ID: ", id + " deleted");
         return deleteUser;
     }
     @PutMapping("/users/{id}")
-    public ResponseEntity<Users> updateUser(@PathVariable(value = "id") long id, @RequestBody Users userDetails) throws RecordNotFoundException {
-        Users users = userRepository.findById(id).orElseThrow(() -> new RecordNotFoundException("ID: " + id + " not found"));
+    public ResponseEntity<Users> updateUser(@PathVariable(value = "id") long id, @RequestBody Users userDetails) throws UserNotFoundException {
+        Users users = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("ID: " + id + " not found"));
         users.setName(userDetails.getName());
         users.setEmail(userDetails.getEmail());
         users.setPhone(userDetails.getPhone());
