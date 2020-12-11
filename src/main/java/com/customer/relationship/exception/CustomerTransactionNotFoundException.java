@@ -4,14 +4,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class TransactionNotFoundException extends RuntimeException {
-    public TransactionNotFoundException() {
+public class CustomerTransactionNotFoundException extends RuntimeException {
+    public CustomerTransactionNotFoundException() {
         super();
     }
-    public TransactionNotFoundException(String message) {
+    public CustomerTransactionNotFoundException(String message) {
         super(message);
     }
-    public TransactionNotFoundException(String message, Throwable cause) {
+    public CustomerTransactionNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
 }
